@@ -1,30 +1,41 @@
 import pygame
-from Boid import Boid
-
-
-pygame.init()
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-clock = pygame.time.Clock()
+import random
+from boids import Boids
 
 # constants
-BLACK = (0, 0, 0)
+BG = (236, 242, 255)
 FPS = 60
-WIDTH, HEIGHT = pygame.display.get_surface().get_size()
+WIDTH, HEIGHT = 1000, 800
 N_BOIDS = 200
+
+pygame.init()
+screen = pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption('Flocking Simulation')
+pygame.display.set_icon(pygame.image.load('./assets/icon.png'))
+clock = pygame.time.Clock()
 
 boids = []
 for _ in range(N_BOIDS):
-    boids.append(Boid(screen, WIDTH, HEIGHT))
+    boids.append(Boids(screen, WIDTH, HEIGHT))
 
-while True:
-    [exit() for _ in pygame.event.get() if _.type == pygame.KEYDOWN and _.key == pygame.K_ESCAPE]
+start = False
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                start = not start
 
-    screen.fill(BLACK)
 
-    for boid in boids:
-        boid.flock(boids)
-        boid.update()
-        boid.draw()
+    screen.fill(BG)
+
+    if start: 
+        for boid in boids:
+            boid.flock(boids)
+            boid.update(boids)
+            boid.draw()
 
     pygame.display.flip()
     clock.tick(FPS)
