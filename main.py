@@ -18,7 +18,7 @@ boids = []
 for _ in range(N_BOIDS):
     boids.append(Boids(screen, WIDTH, HEIGHT))
 
-start = False
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -30,12 +30,11 @@ while running:
 
 
     screen.fill(BG)
-
-    if start: 
-        for boid in boids:
-            boid.flock(boids)
-            boid.update(boids)
-            boid.draw()
+ 
+    for boid in boids:
+        boid.flock(boids)
+        boid.update(boids)
+        boid.draw()
 
     pygame.display.flip()
     clock.tick(FPS)
